@@ -1,5 +1,5 @@
 /**
- * env-lock Secret Versioning
+ * envcrypt Secret Versioning
  * Track changes to environment variables over time
  * 
  * TODO: Implement version storage, diffing, and rollback.

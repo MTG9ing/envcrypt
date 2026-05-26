@@ -1,7 +1,7 @@
-// env-lock Vanilla Node.js snippet
+// envcrypt Vanilla Node.js snippet
 // Add this at the very top of your entry file
 
-const { decryptToEnv } = require('env-lock');
+const { decryptToEnv } = require('envcrypt');
 
 (async () => {
   await decryptToEnv();

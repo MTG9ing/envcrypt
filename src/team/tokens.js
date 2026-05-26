@@ -1,5 +1,5 @@
 /**
- * env-lock Bootstrap Tokens
+ * envcrypt Bootstrap Tokens
  * One-time tokens for new team members to join
  * 
  * TODO: Implement UUID v4 token generation, validation,

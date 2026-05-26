@@ -1,5 +1,5 @@
 /**
- * env-lock Crypto Module
+ * envcrypt Crypto Module
  * AES-256-GCM encryption/decryption with Argon2id key derivation
  */
 
@@ -196,7 +196,7 @@ export async function decryptToEnv(options = {}) {
   const envPath = options.path || path.resolve(process.cwd(), '.env.enc');
 
   if (!fs.existsSync(envPath)) {
-    throw new Error(`.env.enc not found at ${envPath}. Run 'env-lock init' first.`);
+    throw new Error(`.env.enc not found at ${envPath}. Run 'envcrypt init' first.`);
   }
 
   // Read encrypted file
@@ -205,8 +205,8 @@ export async function decryptToEnv(options = {}) {
   // Get password
   let password = options.password;
   if (!password) {
-    // Check for ENV_LOCK_PASSWORD environment variable
-    password = process.env.ENV_LOCK_PASSWORD;
+    // Check for ENVCRYPT_PASSWORD environment variable
+    password = process.env.ENVCRYPT_PASSWORD;
   }
 
   if (!password) {
@@ -217,7 +217,7 @@ export async function decryptToEnv(options = {}) {
     });
 
     password = await new Promise((resolve) => {
-      rl.question('Enter env-lock password: ', (answer) => {
+      rl.question('Enter envcrypt password: ', (answer) => {
         rl.close();
         resolve(answer);
       });

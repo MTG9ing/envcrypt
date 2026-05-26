@@ -1,5 +1,5 @@
 /**
- * env-lock - Main Entry Point
+ * envcrypt - Main Entry Point
  * The Ultimate Developer Secrets Swiss Army Knife
  */
 

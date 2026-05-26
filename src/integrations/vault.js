@@ -1,5 +1,5 @@
 /**
- * env-lock HashiCorp Vault Integration
+ * envcrypt HashiCorp Vault Integration
  * Export encrypted secrets to HashiCorp Vault
  * 
  * TODO: Implement Vault API client.

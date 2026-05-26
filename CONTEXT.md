@@ -1,13 +1,13 @@
-# ENV-LOCK PROJECT CONTEXT
+# envcrypt PROJECT CONTEXT
 # =======================
 # Last Updated: 2026-05-26
-# Purpose: Preserve the vision, plan, and architecture of env-lock
+# Purpose: Preserve the vision, plan, and architecture of envcrypt
 # Status: PHASE 1 & 2 COMPLETE — Ready for npm publish
 
 # -----------------------------------------------------------------------------
 # PROJECT IDENTITY
 # -----------------------------------------------------------------------------
-NAME:        env-lock
+NAME:        envcrypt
 TAGLINE:     "The Ultimate Developer Secrets Swiss Army Knife"
 FORMAT:      CLI Tool & Cryptographic Core Security Module
 LICENSE:     MIT
@@ -27,7 +27,7 @@ STATUS:      MVP Complete — Core + Security phases implemented
 # -----------------------------------------------------------------------------
 # CORE SOLUTION
 # -----------------------------------------------------------------------------
-1. INTERACTIVE SETUP (env-lock init)
+1. INTERACTIVE SETUP (envcrypt init)
    - Guides user through environment configuration
    - Auto-generates high-entropy cryptographic strings
    - Detects active local processes for safe port suggestions
@@ -49,12 +49,12 @@ STATUS:      MVP Complete — Core + Security phases implemented
 
 PHASE 1: CORE FOUNDATION — ✅ COMPLETE
 ----------------------------------------
-1.  env-lock init              ✅ Interactive wizard for first-time setup
+1.  envcrypt init              ✅ Interactive wizard for first-time setup
 2.  Auto-generated secrets      ✅ Crypto-secure random strings (JWT, sessions, API keys)
 3.  Port detection              ✅ Scan active processes, suggest safe unblocked ports
 4.  AES-256-GCM encryption      ✅ Encrypt all variables into .env.enc binary payload
 5.  Runtime decryption snippet  ✅ One-liner to decrypt into application memory
-6.  env-lock run <cmd>          ✅ Decrypt, inject into child process, auto-cleanup on exit
+6.  envcrypt run <cmd>          ✅ Decrypt, inject into child process, auto-cleanup on exit
 
 PHASE 2: SECURITY HARDENING — ✅ COMPLETE
 ------------------------------------------
@@ -62,13 +62,13 @@ PHASE 2: SECURITY HARDENING — ✅ COMPLETE
 8.  Memory lock (mlock)              ⚠️ Detected availability, graceful fallback
 9.  Auto-shred memory                ✅ Explicit buffer overwrite after use
 10. Tamper-evident HMAC              ✅ Integrity check on .env.enc header
-11. Audit logging                    ✅ .env-lock/audit.log tracks decrypt events
+11. Audit logging                    ✅ .envcrypt/audit.log tracks decrypt events
 12. Pre-commit hook                  ✅ Block plaintext .env commits
 
 PHASE 3: TEAM & COLLABORATION — 📝 PLANNED
 -------------------------------------------
 13. Asymmetric key sharing      📝 Placeholder module created
-14. env-lock join <token>       📝 Placeholder module created
+14. envcrypt join <token>       📝 Placeholder module created
 15. Secret versioning           📝 Placeholder module created
 16. Secret diffing              📝 Placeholder module created
 17. Hot rotation                📝 Placeholder module created
@@ -77,9 +77,9 @@ PHASE 4: DEVELOPER EXPERIENCE — ✅ COMPLETE
 --------------------------------------------
 18. Template presets            ✅ 5 presets: node-jwt-postgres, node-mongodb, python-django, go-standard, vanilla-js
 19. Shell autocompletion        📝 Planned for v1.1
-20. env-lock doctor             ✅ Health check environment setup
+20. envcrypt doctor             ✅ Health check environment setup
 21. Framework-aware snippets    ✅ 4 snippets: express-js, express-ts, fastify-js, vanilla-js
-22. .env-lock/config.json sync  ✅ Auto-generated on init
+22. .envcrypt/config.json sync  ✅ Auto-generated on init
 
 PHASE 5: INTEGRATIONS & EXPORT — 📝 PLANNED
 --------------------------------------------
@@ -90,9 +90,9 @@ PHASE 5: INTEGRATIONS & EXPORT — 📝 PLANNED
 # -----------------------------------------------------------------------------
 # FILE STRUCTURE
 # -----------------------------------------------------------------------------
-env-lock/
+envcrypt/
 ├── bin/
-│   └── env-lock.js          ✅ CLI entry point (Commander.js)
+│   └── envcrypt.js          ✅ CLI entry point (Commander.js)
 ├── src/
 │   ├── index.js             ✅ Main exports
 │   ├── crypto/              ✅ All implemented
@@ -186,19 +186,19 @@ ENCRYPTED FILE FORMAT (.env.enc):
 1. npm login
 2. npm version 1.0.0
 3. npm publish --access public
-4. Verify: npm view env-lock
+4. Verify: npm view envcrypt
 
 # -----------------------------------------------------------------------------
 # GITHUB SETUP STEPS
 # -----------------------------------------------------------------------------
-1. Create repo: github.com/new → env-lock
+1. Create repo: github.com/new → envcrypt
 2. git init
 3. git add .
 4. git commit -m "feat: initial release v1.0.0"
 5. git branch -M main
-6. git remote add origin https://github.com/YOUR_USERNAME/env-lock.git
+6. git remote add origin https://github.com/YOUR_USERNAME/envcrypt.git
 7. git push -u origin main
-8. Create release: github.com/YOUR_USERNAME/env-lock/releases/new
+8. Create release: github.com/YOUR_USERNAME/envcrypt/releases/new
 9. Tag: v1.0.0
 
 # -----------------------------------------------------------------------------
@@ -215,7 +215,7 @@ ENCRYPTED FILE FORMAT (.env.enc):
 # -----------------------------------------------------------------------------
 v1.1 — Team Features
   - Asymmetric key sharing
-  - Bootstrap tokens (env-lock join)
+  - Bootstrap tokens (envcrypt join)
   - Secret versioning & diffing
   - Hot rotation
   - Shell autocompletion

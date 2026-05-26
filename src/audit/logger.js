@@ -1,5 +1,5 @@
 /**
- * env-lock Audit Logger
+ * envcrypt Audit Logger
  * Track all decrypt, rotate, and team events
  */
 
@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 
-const AUDIT_DIR = '.env-lock';
+const AUDIT_DIR = '.envcrypt';
 const AUDIT_FILE = 'audit.log';
 
 /**

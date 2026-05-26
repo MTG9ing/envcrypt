@@ -1,9 +1,10 @@
 /**
- * env-lock Memory Security Module
+ * envcrypt Memory Security Module
  * Secure memory management - mlock, auto-shred, buffer wiping
  */
 
 import { execSync } from 'node:child_process';
+import crypto from 'node:crypto';
 
 let mlockAvailable = null;
 
@@ -15,16 +16,11 @@ export function isMlockAvailable() {
   if (mlockAvailable !== null) return mlockAvailable;
 
   try {
-    // Try to use mlock via a small test
-    // On Linux/macOS, we can check if the process has capability
     if (process.platform === 'linux' || process.platform === 'darwin') {
-      // Check if we have CAP_IPC_LOCK or are root
       const uid = process.getuid ? process.getuid() : -1;
-      mlockAvailable = uid === 0; // root can mlock
-      // TODO: More sophisticated capability check for Linux
+      mlockAvailable = uid === 0;
     } else if (process.platform === 'win32') {
-      // Windows uses VirtualLock
-      mlockAvailable = true; // Assume available, will fail gracefully
+      mlockAvailable = true;
     }
   } catch {
     mlockAvailable = false;
@@ -45,11 +41,6 @@ export function lockMemory(buffer) {
 
   try {
     if (process.platform === 'linux' || process.platform === 'darwin') {
-      // Use mlock via child process (requires root or CAP_IPC_LOCK)
-      // This is a best-effort approach
-      const bufAddr = buffer.buffer;
-      // Note: True mlock requires native binding or root privileges
-      // For now, we warn if not available
       return false;
     }
     return false;
@@ -66,32 +57,25 @@ export function secureWipe(buffer) {
   if (!buffer || !Buffer.isBuffer(buffer)) return;
 
   try {
-    // Overwrite with zeros
     buffer.fill(0);
-
-    // Overwrite with ones (defense in depth)
     buffer.fill(0xFF);
 
-    // Overwrite with random data
-    import crypto from 'node:crypto';
     const randomData = crypto.randomBytes(buffer.length);
     randomData.copy(buffer);
 
-    // Final zero overwrite
     buffer.fill(0);
   } catch {
-    // Best effort - if buffer is already freed, ignore
+    // Best effort
   }
 }
 
 /**
- * Clear all env-lock related environment variables from process.env
- * Call this before process exit when using env-lock run
+ * Clear all envcrypt related environment variables from process.env
  */
 export function clearEnvVars() {
-  const envLockPrefix = 'ENV_LOCK_';
+  const envcryptPrefix = 'ENVCRYPT_';
   for (const key of Object.keys(process.env)) {
-    if (key.startsWith(envLockPrefix)) {
+    if (key.startsWith(envcryptPrefix)) {
       delete process.env[key];
     }
   }

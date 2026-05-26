@@ -1,5 +1,5 @@
 /**
- * env-lock Team Key Management
+ * envcrypt Team Key Management
  * Asymmetric encryption for sharing .env.enc with team members
  * 
  * TODO: Implement RSA key pair generation, public key storage,

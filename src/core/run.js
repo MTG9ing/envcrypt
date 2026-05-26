@@ -1,5 +1,5 @@
 /**
- * env-lock Run Command
+ * envcrypt Run Command
  * Decrypt environment, inject into child process, auto-cleanup
  */
 
@@ -21,7 +21,7 @@ export default async function run(command, args = []) {
 
   // Check if .env.enc exists
   if (!fs.existsSync(envEncPath)) {
-    console.error(chalk.red('❌ .env.enc not found. Run "env-lock init" first.'));
+    console.error(chalk.red('❌ .env.enc not found. Run "envcrypt init" first.'));
     process.exit(1);
   }
 
@@ -30,7 +30,7 @@ export default async function run(command, args = []) {
   const payload = fs.readFileSync(envEncPath);
 
   // Get password
-  let password = process.env.ENV_LOCK_PASSWORD;
+  let password = process.env.ENVCRYPT_PASSWORD;
 
   if (!password) {
     spinner.stop();
@@ -41,7 +41,7 @@ export default async function run(command, args = []) {
     });
 
     password = await new Promise((resolve) => {
-      rl.question(chalk.cyan('Enter env-lock password: '), (answer) => {
+      rl.question(chalk.cyan('Enter envcrypt password: '), (answer) => {
         rl.close();
         resolve(answer);
       });
@@ -55,7 +55,7 @@ export default async function run(command, args = []) {
     spinner.succeed(chalk.green('Environment decrypted'));
 
     // Wipe password from memory
-    if (password !== process.env.ENV_LOCK_PASSWORD) {
+    if (password !== process.env.ENVCRYPT_PASSWORD) {
       secureWipe(Buffer.from(password));
     }
 
@@ -63,7 +63,7 @@ export default async function run(command, args = []) {
     const childEnv = {
       ...process.env,
       ...envVars,
-      ENV_LOCK_ACTIVE: 'true'
+      ENVCRYPT_ACTIVE: 'true'
     };
 
     // Determine shell command

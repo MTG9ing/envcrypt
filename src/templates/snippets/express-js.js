@@ -1,7 +1,7 @@
-// env-lock Express.js snippet
+// envcrypt Express.js snippet
 // Add this at the very top of your entry file (before any other imports)
 
-const { decryptToEnv } = require('env-lock');
+const { decryptToEnv } = require('envcrypt');
 
 (async () => {
   await decryptToEnv();

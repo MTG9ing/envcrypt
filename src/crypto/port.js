@@ -1,5 +1,5 @@
 /**
- * env-lock Port Detection Module
+ * envcrypt Port Detection Module
  * Find available, unblocked network ports
  */
 

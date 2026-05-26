@@ -1,5 +1,5 @@
 /**
- * env-lock Git Hooks
+ * envcrypt Git Hooks
  * Pre-commit hook to prevent plaintext .env commits
  */
 
@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const HOOK_SCRIPT = `#!/bin/sh
-# env-lock pre-commit hook
+# envcrypt pre-commit hook
 # Prevents committing plaintext .env files
 
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
@@ -16,7 +16,7 @@ for FILE in $STAGED_FILES; do
   case "$FILE" in
     .env|.env.local|.env.*.local|.env.development|.env.production|.env.staging)
       echo "❌ ERROR: Attempting to commit plaintext .env file: $FILE"
-      echo "   Run 'env-lock init' to encrypt your environment variables."
+      echo "   Run 'envcrypt init' to encrypt your environment variables."
       echo "   Only .env.enc should be committed."
       exit 1
       ;;
@@ -45,22 +45,22 @@ export function installPreCommitHook() {
     // Check if hook already exists
     if (fs.existsSync(hookPath)) {
       const existing = fs.readFileSync(hookPath, 'utf-8');
-      if (existing.includes('env-lock')) {
-        console.log('✓ env-lock pre-commit hook already installed.');
+      if (existing.includes('envcrypt')) {
+        console.log('✓ envcrypt pre-commit hook already installed.');
         return true;
       }
 
       // Append to existing hook
       fs.appendFileSync(hookPath, '\n' + HOOK_SCRIPT);
       fs.chmodSync(hookPath, 0o755);
-      console.log('✓ env-lock pre-commit hook appended to existing hook.');
+      console.log('✓ envcrypt pre-commit hook appended to existing hook.');
       return true;
     }
 
     // Create new hook
     fs.writeFileSync(hookPath, HOOK_SCRIPT);
     fs.chmodSync(hookPath, 0o755);
-    console.log('✓ env-lock pre-commit hook installed.');
+    console.log('✓ envcrypt pre-commit hook installed.');
     return true;
 
   } catch (error) {
@@ -82,24 +82,24 @@ export function removePreCommitHook() {
     }
 
     const content = fs.readFileSync(hookPath, 'utf-8');
-    if (!content.includes('env-lock')) {
+    if (!content.includes('envcrypt')) {
       return false;
     }
 
-    // If hook only contains env-lock, remove it entirely
+    // If hook only contains envcrypt, remove it entirely
     const lines = content.split('\n');
-    const envLockStart = lines.findIndex(line => line.includes('env-lock pre-commit hook'));
+    const envcryptStart = lines.findIndex(line => line.includes('envcrypt pre-commit hook'));
     
-    if (envLockStart === 0) {
-      // env-lock is the only content
+    if (envcryptStart === 0) {
+      // envcrypt is the only content
       fs.unlinkSync(hookPath);
     } else {
-      // Remove env-lock section from mixed hook
-      const newContent = lines.slice(0, envLockStart).join('\n');
+      // Remove envcrypt section from mixed hook
+      const newContent = lines.slice(0, envcryptStart).join('\n');
       fs.writeFileSync(hookPath, newContent);
     }
 
-    console.log('✓ env-lock pre-commit hook removed.');
+    console.log('✓ envcrypt pre-commit hook removed.');
     return true;
 
   } catch (error) {

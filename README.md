@@ -2,17 +2,17 @@
 
 <!-- ASCII Banner -->
 <pre style="background: transparent; border: none;">
-╔══════════════════════════════════════════════════════════════════╗
-║                                                                  ║
-║     ███████╗███╗   ██╗██╗   ██╗      ██╗      ██████╗  ██████╗██╗  ██╗
-║     ██╔════╝████╗  ██║██║   ██║      ██║     ██╔═══██╗██╔════╝██║ ██╔╝
-║     █████╗  ██╔██╗ ██║██║   ██║█████╗██║     ██║   ██║██║     █████╔╝
-║     ██╔══╝  ██║╚██╗██║╚██╗ ██╔╝╚════╝██║     ██║   ██║██║     ██╔═██╗
-║     ███████╗██║ ╚████║ ╚████╔╝       ███████╗╚██████╔╝╚██████╗██║  ██╗
-║     ╚══════╝╚═╝  ╚═══╝  ╚═══╝        ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝
-║                                                                  ║
-║              The Ultimate Developer Secrets Swiss Army Knife     ║
-╚══════════════════════════════════════════════════════════════════╝
+╔═════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                 ║
+║     ███████╗███╗   ██╗██╗   ██╗      ██████╗██████╗ ██╗   ██╗██████╗ ████████╗  ║
+║     ██╔════╝████╗  ██║██║   ██║     ██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗╚══██╔══╝  ║
+║     █████╗  ██╔██╗ ██║██║   ██║     ██║     ██████╔╝ ╚████╔╝ ██████╔╝   ██║     ║
+║     ██╔══╝  ██║╚██╗██║╚██╗ ██╔╝     ██║     ██╔══██╗  ╚██╔╝  ██╔═══╝    ██║     ║
+║     ███████╗██║ ╚████║ ╚████╔╝      ╚██████╗██║  ██║   ██║   ██║        ██║     ║
+║     ╚══════╝╚═╝  ╚═══╝  ╚═══╝        ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝        ╚═╝     ║
+║                                                                                 ║
+║                    The Ultimate Developer Secrets Swiss Army Knife              ║
+╚═════════════════════════════════════════════════════════════════════════════════╝
 </pre>
 
 <!-- Badges -->
@@ -29,9 +29,9 @@
 
 ---
 
-## What is env-lock?
+## What is envcrypt?
 
-**env-lock** is a CLI tool that eliminates plaintext `.env` files from your development workflow. It interactively generates secrets, detects safe ports, encrypts everything into a single `.env.enc` file, and provides one-line runtime decryption straight into your application's memory.
+**envcrypt** is a CLI tool that eliminates plaintext `.env` files from your development workflow. It interactively generates secrets, detects safe ports, encrypts everything into a single `.env.enc` file, and provides one-line runtime decryption straight into your application's memory.
 
 **No plaintext on disk. No accidental commits. No leaked secrets.**
 
@@ -45,7 +45,7 @@
 - 🔍 **Smart port detection** — Scans active processes, suggests completely safe, unblocked ports
 - 🔐 **AES-256-GCM encryption** — Military-grade encryption for your environment variables
 - ⚡ **One-line runtime decryption** — Decrypt `.env.enc` straight into memory, never touch disk
-- 🚀 **`env-lock run`** — Decrypt, inject, execute, auto-cleanup
+- 🚀 **`envcrypt run`** — Decrypt, inject, execute, auto-cleanup
 
 ### Security Hardening
 
@@ -59,15 +59,15 @@
 ### Team & Collaboration
 
 - 👥 **Asymmetric key sharing** — Share `.env.enc` safely via public key encryption
-- 🔗 **One-time bootstrap tokens** — `env-lock join <token>` for new team members
+- 🔗 **One-time bootstrap tokens** — `envcrypt join <token>` for new team members
 - 📜 **Secret versioning** — Track what changed, when, and who changed it
 - 🔄 **Hot rotation** — Swap secrets in running processes without downtime
 
 ### Developer Experience
 
-- 📦 **Template presets** — `env-lock init --preset node-jwt-postgres`
+- 📦 **Template presets** — `envcrypt init --preset node-jwt-postgres`
 - 🖥️ **Shell autocompletion** — Tab-complete everything
-- 🩺 **`env-lock doctor`** — Health check your environment setup
+- 🩺 **`envcrypt doctor`** — Health check your environment setup
 - 🧩 **Framework-aware snippets** — Auto-generate decryption code for your stack
 
 ### Integrations
@@ -82,15 +82,15 @@
 ### Installation
 
 ```bash
-npm install -g env-lock
+npm install -g envcrypt
 ```
 
 ### Initialize a new environment
 
 ```bash
-$ env-lock init
+$ envcrypt init
 
-🔐 env-lock initialization
+🔐 envcrypt initialization
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ? Project name: my-awesome-api
@@ -105,17 +105,18 @@ $ env-lock init
 ✓ Encrypted 8 variables into .env.enc
 ✓ Generated runtime decryption snippet
 
-🎉 Your environment is locked. Run with: env-lock run npm start
+🎉 Your environment is locked. Run with: envcrypt run npm start
 ```
 
 ### Use in your code
 
 ```javascript
 // At the very top of your entry file
-require("env-lock").decrypt();
+import { decryptToEnv } from "envcrypt";
+await decryptToEnv();
 
 // Now process.env has everything, never touched disk as plaintext
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 const token = jwt.sign(payload, process.env.JWT_SECRET);
 ```
 
@@ -123,11 +124,11 @@ const token = jwt.sign(payload, process.env.JWT_SECRET);
 
 ```bash
 # Decrypts to memory, runs your app, wipes on exit
-env-lock run node server.js
+envcrypt run node server.js
 
 # Or with npm scripts
-env-lock run npm start
-env-lock run npm run dev
+envcrypt run npm start
+envcrypt run npm run dev
 ```
 
 ---
@@ -137,7 +138,7 @@ env-lock run npm run dev
 ```
 your-project/
 ├── .env.enc              # ✅ Encrypted environment (safe to commit)
-├── .env-lock/            # env-lock metadata (safe to commit)
+├── .envcrypt/            # envcrypt metadata (safe to commit)
 │   ├── config.json       # Schema, team public keys
 │   └── audit.log         # Decrypt events
 ├── .gitignore            # ❌ .env is automatically ignored
@@ -148,7 +149,7 @@ your-project/
 **What you commit:**
 
 - ✅ `.env.enc` — encrypted binary, useless without the key
-- ✅ `.env-lock/` — config and audit logs
+- ✅ `.envcrypt/` — config and audit logs
 
 **What never exists:**
 
@@ -173,13 +174,13 @@ your-project/
 
 | Command                 | Description                                   |
 | ----------------------- | --------------------------------------------- |
-| `env-lock init`         | Interactive environment setup wizard          |
-| `env-lock run <cmd>`    | Decrypt, inject, execute, cleanup             |
-| `env-lock doctor`       | Health check environment setup                |
-| `env-lock rotate`       | Generate new secrets, hot-swap in memory      |
-| `env-lock join <token>` | Join team with one-time bootstrap token       |
-| `env-lock export`       | Export to cloud vault (AWS, 1Password, Vault) |
-| `env-lock version`      | Show version and encryption metadata          |
+| `envcrypt init`         | Interactive environment setup wizard          |
+| `envcrypt run <cmd>`    | Decrypt, inject, execute, cleanup             |
+| `envcrypt doctor`       | Health check environment setup                |
+| `envcrypt rotate`       | Generate new secrets, hot-swap in memory      |
+| `envcrypt join <token>` | Join team with one-time bootstrap token       |
+| `envcrypt export`       | Export to cloud vault (AWS, 1Password, Vault) |
+| `envcrypt version`      | Show version and encryption metadata          |
 
 ---
 
@@ -187,16 +188,16 @@ your-project/
 
 ```bash
 # Lead developer initializes and shares
-$ env-lock init
-$ env-lock team add alice@company.com
-$ env-lock team add bob@company.com
-$ git add .env.enc .env-lock/
+$ envcrypt init
+$ envcrypt team add alice@company.com
+$ envcrypt team add bob@company.com
+$ git add .env.enc .envcrypt/
 $ git commit -m "feat: locked environment"
 
 # Teammate joins with one-time token
 $ git clone repo
-$ env-lock join abc123-def456-ghi789
-$ env-lock run npm start
+$ envcrypt join abc123-def456-ghi789
+$ envcrypt run npm start
 ```
 
 ---
@@ -204,7 +205,7 @@ $ env-lock run npm start
 ## 🔧 Configuration
 
 ```json
-// .env-lock/config.json
+// .envcrypt/config.json
 {
   "project": "my-awesome-api",
   "version": "1.0.0",
@@ -226,13 +227,12 @@ $ env-lock run npm start
 ## 🏗️ Architecture
 
 ```
-env-lock/
+envcrypt/
 ├── bin/
-│   └── env-lock.js          # CLI entry point
+│   └── envcrypt.js          # CLI entry point
 ├── src/
 │   ├── crypto/              # AES-256-GCM, Argon2id, HMAC, mlock
-│   │   ├── cipher.js        # Encryption/decryption engine
-│   │   ├── kdf.js           # Key derivation (Argon2id)
+│   │   ├── cipher.js        # Encryption/decryption + Argon2id KDF
 │   │   └── memory.js        # Secure memory management
 │   ├── core/                # Main commands
 │   │   ├── init.js          # Interactive wizard
@@ -275,7 +275,7 @@ npm test -- --grep integration
 
 ## 📄 License
 
-MIT © env-lock contributors
+MIT © envcrypt contributors
 
 ---
 

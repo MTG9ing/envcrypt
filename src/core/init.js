@@ -1,5 +1,5 @@
 /**
- * env-lock Init Command
+ * envcrypt Init Command
  * Interactive wizard for setting up encrypted environment
  */
 
@@ -70,7 +70,7 @@ const PRESETS = {
  * @param {Object} options - CLI options
  */
 export default async function init(options = {}) {
-  console.log(chalk.cyan('\n🔐 env-lock initialization'));
+  console.log(chalk.cyan('\n🔐 envcrypt initialization'));
   console.log(chalk.gray('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'));
 
   // Check if .env.enc already exists
@@ -294,10 +294,10 @@ export default async function init(options = {}) {
     const encrypted = await encrypt(envVars, password);
     fs.writeFileSync(envEncPath, encrypted);
 
-    // Create .env-lock directory and config
-    const envLockDir = path.resolve(process.cwd(), '.env-lock');
-    if (!fs.existsSync(envLockDir)) {
-      fs.mkdirSync(envLockDir, { recursive: true });
+    // Create .envcrypt directory and config
+    const envcryptDir = path.resolve(process.cwd(), '.envcrypt');
+    if (!fs.existsSync(envcryptDir)) {
+      fs.mkdirSync(envcryptDir, { recursive: true });
     }
 
     const config = {
@@ -312,7 +312,7 @@ export default async function init(options = {}) {
     };
 
     fs.writeFileSync(
-      path.join(envLockDir, 'config.json'),
+      path.join(envcryptDir, 'config.json'),
       JSON.stringify(config, null, 2)
     );
 
@@ -329,10 +329,10 @@ export default async function init(options = {}) {
     console.log(chalk.cyan('\n🚀 Usage'));
     console.log(chalk.gray('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
     console.log(chalk.yellow('In your code:'));
-    console.log(chalk.gray("require('env-lock').decrypt();"));
+    console.log(chalk.gray("require('envcrypt').decrypt();"));
     console.log(chalk.gray('// process.env is now populated'));
     console.log(chalk.yellow('\nRun your app:'));
-    console.log(chalk.gray('env-lock run npm start'));
+    console.log(chalk.gray('envcrypt run npm start'));
 
     console.log(chalk.cyan('\n✅ Your environment is locked!'));
     console.log(chalk.gray('.env.enc is safe to commit. Never commit .env files.\n'));

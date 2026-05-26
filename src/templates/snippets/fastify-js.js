@@ -1,7 +1,7 @@
-// env-lock Fastify snippet
+// envcrypt Fastify snippet
 // Add this at the very top of your entry file
 
-import { decryptToEnv } from 'env-lock';
+import { decryptToEnv } from 'envcrypt';
 
 (async () => {
   await decryptToEnv();

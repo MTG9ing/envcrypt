@@ -1,5 +1,5 @@
 /**
- * env-lock Doctor Command
+ * envcrypt Doctor Command
  * Health check for environment setup
  */
 
@@ -11,7 +11,7 @@ import chalk from 'chalk';
  * Run health checks
  */
 export default async function doctor() {
-  console.log(chalk.cyan('\n🩺 env-lock Doctor'));
+  console.log(chalk.cyan('\n🩺 envcrypt Doctor'));
   console.log(chalk.gray('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'));
 
   const checks = [];
@@ -29,12 +29,12 @@ export default async function doctor() {
     checks.push({
       name: '.env.enc file',
       status: 'fail',
-      detail: 'Not found. Run "env-lock init"'
+      detail: 'Not found. Run "envcrypt init"'
     });
   }
 
-  // Check 2: .env-lock/config.json exists
-  const configPath = path.resolve(process.cwd(), '.env-lock', 'config.json');
+  // Check 2: .envcrypt/config.json exists
+  const configPath = path.resolve(process.cwd(), '.envcrypt', 'config.json');
   if (fs.existsSync(configPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));

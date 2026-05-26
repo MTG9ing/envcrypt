@@ -1,5 +1,5 @@
 /**
- * env-lock 1Password Integration
+ * envcrypt 1Password Integration
  * Export encrypted secrets to 1Password vault
  * 
  * TODO: Implement 1Password CLI integration.

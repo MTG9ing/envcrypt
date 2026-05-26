@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * env-lock CLI
+ * envcrypt CLI
  * The Ultimate Developer Secrets Swiss Army Knife
  */
 
@@ -13,7 +13,7 @@ import run from '../src/core/run.js';
 import doctor from '../src/core/doctor.js';
 
 const banner = boxen(
-  chalk.cyan.bold('🔐 ENV-LOCK') + '\n' +
+  chalk.cyan.bold('🔐 ENVCRYPT') + '\n' +
   chalk.gray('The Ultimate Developer Secrets Swiss Army Knife'),
   {
     padding: 1,
@@ -25,7 +25,7 @@ const banner = boxen(
 );
 
 program
-  .name('env-lock')
+  .name('envcrypt')
   .description('Encrypt your environment. Never leak a secret.')
   .version('1.0.0')
   .usage('<command> [options]');

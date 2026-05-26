@@ -1,5 +1,5 @@
 /**
- * env-lock Secret Generation Module
+ * envcrypt Secret Generation Module
  * Cryptographically secure random string generation
  */
 
