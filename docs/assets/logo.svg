@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" class="logo-svg">
+  <defs>
+    <linearGradient id="logoG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00E5FF"/>
+      <stop offset="100%" style="stop-color:#00B8D4"/>
+    </linearGradient>
+  </defs>
+  <path d="M8 8c-3 0-5.5 2.5-5.5 5.5v4h-3v14c0 2 1.5 3.5 3.5 3.5h12c2 0 3.5-1.5 3.5-3.5v-14h-3v-4c0-3-2.5-5.5-5.5-5.5zm0 3c1.5 0 2.5 1 2.5 2.5v4h-5v-4c0-1.5 1-2.5 2.5-2.5z" fill="url(#logoG)"/>
+  <circle cx="8" cy="24" r="2" fill="#000"/>
+  <rect x="6.5" y="24" width="3" height="6" rx="1" fill="#000"/>
+  <text x="28" y="27" font-family="Space Grotesk, sans-serif" font-size="22" font-weight="700" fill="#000">envcrypt</text>
+</svg>

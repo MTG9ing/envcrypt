@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground — envcrypt</title>
+  <meta name="description" content="Test envcrypt features in your browser. Generate secrets, scan ports, and encrypt/decrypt with real AES-256-GCM.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <style>
+    .playground-section {
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      transition: all var(--transition-base);
+    }
+    
+    .playground-section:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.06);
+    }
+    
+    .playground-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .playground-desc {
+      color: var(--slate);
+      font-size: 0.9375rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .pg-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--black);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    
+    .pg-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px var(--cyan-glow);
+    }
+    
+    .pg-input::placeholder { color: var(--muted); }
+    
+    .pg-select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--black);
+      outline: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    
+    .pg-select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px var(--cyan-glow);
+    }
+    
+    .pg-output {
+      padding: 1rem;
+      border-radius: 12px;
+      background: var(--charcoal);
+      color: #E4E4E7;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      word-break: break-all;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      transition: opacity var(--transition-fast);
+    }
+    
+    .pg-output.empty {
+      color: var(--muted);
+      font-style: italic;
+    }
+    
+    .pg-status {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-top: 0.75rem;
+      min-height: 1.5rem;
+      transition: all var(--transition-fast);
+    }
+    
+    .pg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .pg-grid { grid-template-columns: 1fr; }
+    }
+    
+    .encrypt-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    
+    .encrypt-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-size: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .encrypt-demo { grid-template-columns: 1fr; }
+      .encrypt-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+          <rect width="100" height="100" rx="20" fill="#000"/>
+          <path d="M50 20c-8 0-14.5 6.5-14.5 14.5v10h-8v35.5c0 4.5 3.5 8 8 8h29c4.5 0 8-3.5 8-8v-35.5h-8v-10c0-8-6.5-14.5-14.5-14.5zm0 8c3.5 0 6.5 3 6.5 6.5v10h-13v-10c0-3.5 3-6.5 6.5-6.5z" fill="url(#logoGrad)"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00E5FF"/>
+              <stop offset="100%" style="stop-color:#00B8D4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        envcrypt
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="docs.html" class="nav-link">Documentation</a></li>
+        <li><a href="playground.html" class="nav-link">Playground</a></li>
+        <li><a href="index.html#features" class="nav-link">Features</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+        <a href="https://github.com/mtg9ing/envcrypt" class="github-btn" target="_blank">
+          <i data-lucide="github" style="width:16px;height:16px;"></i>
+          <span>Star</span>
+        </a>
+      </div>
+      
+      <button class="mobile-menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  
+  <div class="mobile-nav-overlay"></div>
+  <div class="mobile-nav">
+    <ul class="mobile-nav-links">
+      <li><a href="docs.html">Documentation</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="https://github.com/mtg9ing/envcrypt" target="_blank">GitHub</a></li>
+    </ul>
+  </div>
+  
+  <!-- Hero -->
+  <section class="hero" style="min-height:auto;padding:7rem 2rem 3rem">
+    <div class="section-inner" style="text-align:center">
+      <div class="hero-badge" style="margin:0 auto 1.5rem">
+        <span class="pulse"></span>
+        Interactive Demos
+      </div>
+      <h1 class="hero-title" style="font-size:clamp(2rem,4vw,3.5rem)">Try envcrypt in your browser</h1>
+      <p class="hero-subtitle" style="margin:0 auto">No installation required. Test secret generation, port detection, and real AES-256-GCM encryption.</p>
+    </div>
+  </section>
+  
+  <!-- Playground Grid -->
+  <section class="section" style="padding-top:0">
+    <div class="section-inner">
+      <div class="pg-grid">
+        
+        <!-- Secret Generator -->
+        <div class="playground-section reveal">
+          <div class="playground-title">
+            <i data-lucide="key-round" style="width:22px;height:22px;color:var(--cyan)"></i>
+            Secret Generator
+          </div>
+          <p class="playground-desc">Generate cryptographically secure secrets with real entropy.</p>
+          
+          <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+            <select class="pg-select" id="secretType" style="flex:1">
+              <option value="jwt">JWT Secret (512-bit)</option>
+              <option value="session">Session Secret (256-bit)</option>
+              <option value="api_key">API Key (URL-safe)</option>
+              <option value="password">Password (16 chars)</option>
+            </select>
+            <button class="btn btn-primary" id="generateSecretBtn" style="white-space:nowrap">
+              <i data-lucide="refresh-cw" style="width:16px;height:16px"></i>
+              Generate
+            </button>
+          </div>
+          
+          <div class="pg-output empty" id="secretOutput">Click generate to create a secret</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem">
+            <span class="pg-status" id="entropyDisplay"></span>
+            <button class="btn btn-secondary" id="copySecretBtn" style="padding:0.5rem 1rem;font-size:0.8125rem">
+              <i data-lucide="copy" style="width:14px;height:14px"></i>
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- Port Scanner -->
+        <div class="playground-section reveal reveal-delay-1">
+          <div class="playground-title">
+            <i data-lucide="network" style="width:22px;height:22px;color:var(--cyan)"></i>
+            Port Scanner
+          </div>
+          <p class="playground-desc">Check if a port is available and get suggestions.</p>
+          
+          <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem">
+            <input type="number" class="pg-input" id="portInput" placeholder="Enter port (e.g. 3000)" min="1" max="65535" style="flex:1">
+            <button class="btn btn-primary" id="checkPortBtn" style="white-space:nowrap">
+              <i data-lucide="search" style="width:16px;height:16px"></i>
+              Check
+            </button>
+          </div>
+          
+          <div style="display:flex;align-items:center;gap:1.5rem;padding:1.5rem;background:var(--off-white);border-radius:14px">
+            <div id="portVisual" style="display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:16px;background:var(--white);border:2px solid var(--border)">
+              <i data-lucide="plug" style="width:28px;height:28px;color:var(--slate)"></i>
+            </div>
+            <div id="portResult" style="font-size:0.9375rem;color:var(--slate)">Enter a port number to check availability</div>
+          </div>
+        </div>
+        
+        <!-- Encrypt/Decrypt Demo -->
+        <div class="playground-section reveal" style="grid-column:1 / -1">
+          <div class="playground-title">
+            <i data-lucide="lock" style="width:22px;height:22px;color:var(--cyan)"></i>
+            Encrypt / Decrypt Demo
+          </div>
+          <p class="playground-desc">Real AES-256-GCM encryption using the Web Crypto API. Your data never leaves this browser tab.</p>
+          
+          <div class="encrypt-demo">
+            <div>
+              <label style="display:block;font-size:0.8125rem;font-weight:600;color:var(--black);margin-bottom:0.5rem">Plaintext</label>
+              <textarea class="pg-input" id="plaintextInput" rows="3" placeholder="Enter text to encrypt..." style="font-family:var(--font-body);resize:vertical"></textarea>
+              
+              <label style="display:block;font-size:0.8125rem;font-weight:600;color:var(--black);margin:1rem 0 0.5rem">Password</label>
+              <input type="password" class="pg-input" id="passwordInput" placeholder="Enter encryption password">
+              
+              <div style="display:flex;gap:0.75rem;margin-top:1rem">
+                <button class="btn btn-primary" id="encryptBtn" style="flex:1">
+                  <i data-lucide="lock" style="width:16px;height:16px"></i>
+                  Encrypt
+                </button>
+                <button class="btn btn-secondary" id="decryptBtn" style="flex:1;opacity:0.5" disabled>
+                  <i data-lucide="unlock" style="width:16px;height:16px"></i>
+                  Decrypt
+                </button>
+              </div>
+              
+              <div class="pg-status" id="encryptStatus"></div>
+            </div>
+            
+            <div class="encrypt-arrow">
+              <i data-lucide="arrow-right" style="width:24px;height:24px"></i>
+            </div>
+            
+            <div>
+              <label style="display:block;font-size:0.8125rem;font-weight:600;color:var(--black);margin-bottom:0.5rem">Encrypted (Hex)</label>
+              <div class="pg-output empty" id="encryptedOutput" style="min-height:80px;align-items:flex-start;padding:1rem">Encrypted output will appear here</div>
+              
+              <label style="display:block;font-size:0.8125rem;font-weight:600;color:var(--black);margin:1rem 0 0.5rem">Decrypted</label>
+              <div class="pg-output empty" id="decryptedOutput" style="min-height:80px;align-items:flex-start;padding:1rem">Decrypted output will appear here</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Template Preview -->
+        <div class="playground-section reveal" style="grid-column:1 / -1">
+          <div class="playground-title">
+            <i data-lucide="layout-template" style="width:22px;height:22px;color:var(--cyan)"></i>
+            Template Preview
+          </div>
+          <p class="playground-desc">See what variables each preset generates before you initialize.</p>
+          
+          <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+            <select class="pg-select" id="presetSelect" style="max-width:300px">
+              <option value="node-jwt-postgres">Node.js + JWT + PostgreSQL</option>
+              <option value="node-mongodb">Node.js + MongoDB</option>
+              <option value="python-django">Python Django</option>
+              <option value="go-standard">Go Standard</option>
+            </select>
+          </div>
+          
+          <div id="presetPreview"></div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA -->
+  <section class="cta-banner" style="padding:4rem 2rem">
+    <div class="section-inner" style="position:relative;z-index:1;text-align:center">
+      <h2 class="section-title reveal" style="font-size:2rem;margin-bottom:1rem">Ready to secure your environments?</h2>
+      <p class="section-desc reveal" style="margin-bottom:2rem">Install envcrypt and never commit a .env file again.</p>
+      <div class="reveal">
+        <a href="docs.html" class="btn btn-cyan btn-magnetic" style="font-size:1rem;padding:0.875rem 2rem">
+          Read the Docs
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-brand">
+          <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+            <rect width="100" height="100" rx="20" fill="#000"/>
+            <path d="M50 20c-8 0-14.5 6.5-14.5 14.5v10h-8v35.5c0 4.5 3.5 8 8 8h29c4.5 0 8-3.5 8-8v-35.5h-8v-10c0-8-6.5-14.5-14.5-14.5zm0 8c3.5 0 6.5 3 6.5 6.5v10h-13v-10c0-3.5 3-6.5 6.5-6.5z" fill="url(#footGrad)"/>
+            <defs>
+              <linearGradient id="footGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00E5FF"/>
+                <stop offset="100%" style="stop-color:#00B8D4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          envcrypt
+        </a>
+        <p class="footer-desc">The ultimate developer secrets Swiss Army Knife.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Product</h4>
+        <ul class="footer-links">
+          <li><a href="docs.html">Documentation</a></li>
+          <li><a href="playground.html">Playground</a></li>
+          <li><a href="index.html#features">Features</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Resources</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com/MTG9ing/envcrypt" target="_blank">GitHub</a></li>
+          <li><a href="https://www.npmjs.com/package/envcrypt" target="_blank">npm</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com/MTG9ing/envcrypt/blob/main/LICENSE">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 envcrypt. Open source under MIT License.</p>
+      <div class="footer-social">
+        <a href="https://github.com/mtg9ing/envcrypt" target="_blank" aria-label="GitHub">
+          <i data-lucide="github" style="width:18px;height:18px"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/playground.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

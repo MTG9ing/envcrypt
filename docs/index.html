@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>envcrypt — Never Commit a .env File Again</title>
+  <meta name="description" content="envcrypt encrypts your environment variables with AES-256-GCM. No plaintext secrets on disk. No accidental commits.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- <a href="#main-content" class="skip-link">Skip to content</a> -->
+  <!-- Particles Canvas -->
+  <canvas id="particles-canvas"></canvas>
+  
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+          <rect width="100" height="100" rx="20" fill="#000"/>
+          <path d="M50 20c-8 0-14.5 6.5-14.5 14.5v10h-8v35.5c0 4.5 3.5 8 8 8h29c4.5 0 8-3.5 8-8v-35.5h-8v-10c0-8-6.5-14.5-14.5-14.5zm0 8c3.5 0 6.5 3 6.5 6.5v10h-13v-10c0-3.5 3-6.5 6.5-6.5z" fill="url(#logoGrad)"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00E5FF"/>
+              <stop offset="100%" style="stop-color:#00B8D4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        envcrypt
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="docs.html" class="nav-link">Documentation</a></li>
+        <li><a href="playground.html" class="nav-link">Playground</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+        <a href="https://github.com/mtg9ing/envcrypt" class="github-btn" target="_blank" rel="noopener">
+          <i data-lucide="github" style="width:16px;height:16px;"></i>
+          <span>Star</span>
+        </a>
+        <a href="docs.html" class="btn btn-primary">Get Started</a>
+      </div>
+      
+      <button class="mobile-menu-btn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav-overlay"></div>
+  <div class="mobile-nav">
+    <ul class="mobile-nav-links">
+      <li><a href="docs.html">Documentation</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://github.com/mtg9ing/envcrypt" target="_blank">GitHub</a></li>
+    </ul>
+  </div>
+  
+  <!-- Hero Section -->
+  <section class="hero" id="main-content">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse"></span>
+          v1.0.0 is now available
+        </div>
+        
+        <h1 class="hero-title">
+          Never commit a <span class="highlight">.env</span> file again
+        </h1>
+        
+        <p class="hero-subtitle">
+          envcrypt encrypts your environment variables with AES-256-GCM. 
+          Generate secrets, detect safe ports, and decrypt straight into memory — 
+          so plaintext never touches your disk.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="docs.html" class="btn btn-primary btn-magnetic">
+            Get Started
+            <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </a>
+          <a href="playground.html" class="btn btn-secondary btn-magnetic">
+            Try Playground
+          </a>
+        </div>
+        
+        <div class="hero-install">
+          <span style="color:var(--cyan)">$</span>
+          <span>npm install -g envcrypt</span>
+          <i data-lucide="copy" class="copy-icon" style="width:14px;height:14px;"></i>
+        </div>
+      </div>
+      
+      <div class="hero-terminal">
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">envcrypt init</span>
+          </div>
+          <div class="terminal-body" role="log" aria-live="polite" aria-label="Terminal demonstration"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Trust Bar -->
+  <section class="trust-bar">
+    <div class="trust-inner">
+      <div class="trust-item reveal">
+        <div class="trust-number" data-target="100" data-suffix="+">0</div>
+        <div class="trust-label">npm downloads</div>
+      </div>
+      <div class="trust-item reveal reveal-delay-1">
+        <div class="trust-number" data-target="10" data-suffix="+">0</div>
+        <div class="trust-label">GitHub stars</div>
+      </div>
+      <div class="trust-item reveal reveal-delay-2">
+        <div class="trust-number" data-target="1" data-suffix=".0.0">0</div>
+        <div class="trust-label">Latest version</div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Problem Section -->
+  <section class="section" id="problem">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-label">The Problem</span>
+        <h2 class="section-title">Your .env file is a liability</h2>
+        <p class="section-desc">Every plaintext .env file is a potential data breach waiting to happen.</p>
+      </div>
+      
+      <div class="problem-grid">
+        <div class="problem-card bad reveal">
+          <div class="problem-icon">⚠️</div>
+          <h3>Without envcrypt</h3>
+          <p>Secrets stored in plaintext .env files. Accidentally committed to git. Leaked in code reviews. Exposed in backups.</p>
+        </div>
+        
+        <div class="problem-card good reveal reveal-delay-2">
+          <div class="problem-icon">🔒</div>
+          <h3>With envcrypt</h3>
+          <p>Secrets encrypted with AES-256-GCM. Only .env.enc is committed. Decrypted straight into memory. Never touches disk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- How It Works -->
+  <section class="section" style="background:var(--off-white)" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">Four steps to secure environments</h2>
+        <p class="section-desc">From initialization to runtime — envcrypt handles everything.</p>
+      </div>
+      
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-number">1</div>
+          <h3>Initialize</h3>
+          <p>Run <code>envcrypt init</code> and answer a few questions. Choose a preset or configure custom variables.</p>
+        </div>
+        
+        <div class="step reveal reveal-delay-1">
+          <div class="step-number">2</div>
+          <h3>Generate</h3>
+          <p>envcrypt creates cryptographically secure secrets and finds safe, unblocked ports automatically.</p>
+        </div>
+        
+        <div class="step reveal reveal-delay-2">
+          <div class="step-number">3</div>
+          <h3>Encrypt</h3>
+          <p>Everything is bundled into an AES-256-GCM encrypted .env.enc file with Argon2id key derivation.</p>
+        </div>
+        
+        <div class="step reveal reveal-delay-3">
+          <div class="step-number">4</div>
+          <h3>Run</h3>
+          <p>Use <code>envcrypt run</code> to decrypt into memory and execute. Auto-cleanup when done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-label">Features</span>
+        <h2 class="section-title">Everything you need for secure environments</h2>
+        <p class="section-desc">Built by developers, for developers. Every feature designed to make secret management effortless.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i data-lucide="shield-check" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>AES-256-GCM Encryption</h3>
+          <p>Military-grade encryption with Argon2id key derivation. Your password never leaves your machine.</p>
+        </div>
+        
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">
+            <i data-lucide="key-round" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>Auto-Generated Secrets</h3>
+          <p>Cryptographically secure random strings for JWT, sessions, and API keys. No more changeme123.</p>
+        </div>
+        
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">
+            <i data-lucide="network" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>Smart Port Detection</h3>
+          <p>Scans active processes and suggests completely safe, unblocked ports. No more EADDRINUSE.</p>
+        </div>
+        
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i data-lucide="brain-circuit" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>Memory-Safe Decryption</h3>
+          <p>Secrets decrypted straight into application memory. Auto-shred on exit. Never touches disk as plaintext.</p>
+        </div>
+        
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">
+            <i data-lucide="git-branch" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>Pre-Commit Hook</h3>
+          <p>Automatically blocks plaintext .env commits. Never accidentally expose secrets again.</p>
+        </div>
+        
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">
+            <i data-lucide="users" style="width:24px;height:24px;"></i>
+          </div>
+          <h3>Team Ready</h3>
+          <p>Asymmetric key sharing and one-time bootstrap tokens. Share .env.enc safely with your team.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Code Integration -->
+  <section class="section" style="background:var(--off-white)">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-label">Integration</span>
+        <h2 class="section-title">One line of code</h2>
+        <p class="section-desc">Add envcrypt to any Node.js project in seconds.</p>
+      </div>
+      
+      <div class="code-section reveal">
+        <div class="code-block">
+          <button class="code-copy" onclick="copyToClipboard(this.parentElement.querySelector('pre').textContent, this)">
+            <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy
+          </button>
+          <pre><span class="comment">// At the top of your entry file</span>
+<span class="keyword">import</span> { decryptToEnv } <span class="keyword">from</span> <span class="string">"envcrypt"</span>;
+
+<span class="keyword">await</span> <span class="function">decryptToEnv</span>();
+
+<span class="comment">// process.env is now populated</span>
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
+<span class="keyword">const</span> <span class="variable">app</span> = <span class="function">express</span>();
+
+<span class="comment">// Your secrets are in memory, never on disk</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Common questions</h2>
+        <p class="section-desc">Everything you need to know about envcrypt.</p>
+      </div>
+      
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>How is envcrypt different from dotenv?</span>
+            <i data-lucide="plus" class="faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>dotenv loads plaintext .env files into memory. envcrypt encrypts your environment variables with AES-256-GCM, so only an encrypted .env.enc file exists on disk. Secrets are decrypted at runtime and never saved as plaintext. Plus, envcrypt auto-generates secure secrets and detects safe ports.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question">
+            <span>What encryption does envcrypt use?</span>
+            <i data-lucide="plus" class="faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>envcrypt uses AES-256-GCM for encryption with Argon2id for key derivation. The encrypted file includes an HMAC-SHA256 header for tamper detection. This is the same encryption standard used by governments and military organizations worldwide.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item reveal reveal-delay-2">
+          <button class="faq-question">
+            <span>Can I share .env.enc with my team?</span>
+            <i data-lucide="plus" class="faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! .env.enc is designed to be committed to version control. For team sharing, envcrypt supports asymmetric encryption — the AES key is encrypted with each team member's public key. New members can join with one-time bootstrap tokens.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item reveal reveal-delay-3">
+          <button class="faq-question">
+            <span>What happens if I forget my password?</span>
+            <i data-lucide="plus" class="faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Your password is never stored anywhere — it's used to derive the encryption key via Argon2id. If you forget it, you cannot decrypt .env.enc. You'll need to run envcrypt init again to create a new encrypted environment. This is by design — zero-knowledge security.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item reveal reveal-delay-4">
+          <button class="faq-question">
+            <span>Is envcrypt free?</span>
+            <i data-lucide="plus" class="faq-icon"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, envcrypt is completely free and open source under the MIT license. All core features — encryption, secret generation, port detection, and the CLI — are free forever. Future cloud integrations may have paid tiers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="section-inner" style="position:relative;z-index:1">
+      <h2 class="section-title reveal">Stop committing secrets</h2>
+      <p class="section-desc reveal" style="margin-bottom:2rem">Join thousands of developers who trust envcrypt to protect their environments.</p>
+      <div class="reveal">
+        <a href="docs.html" class="btn btn-cyan btn-magnetic" style="font-size:1.125rem;padding:1rem 2.5rem">
+          Get Started Free
+          <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-brand">
+          <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+            <rect width="100" height="100" rx="20" fill="#000"/>
+            <path d="M50 20c-8 0-14.5 6.5-14.5 14.5v10h-8v35.5c0 4.5 3.5 8 8 8h29c4.5 0 8-3.5 8-8v-35.5h-8v-10c0-8-6.5-14.5-14.5-14.5zm0 8c3.5 0 6.5 3 6.5 6.5v10h-13v-10c0-3.5 3-6.5 6.5-6.5z" fill="url(#footGrad)"/>
+            <defs>
+              <linearGradient id="footGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00E5FF"/>
+                <stop offset="100%" style="stop-color:#00B8D4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          envcrypt
+        </a>
+        <p class="footer-desc">The ultimate developer secrets Swiss Army Knife. Encrypt your environment, never leak a secret.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Product</h4>
+        <ul class="footer-links">
+          <li><a href="docs.html">Documentation</a></li>
+          <li><a href="playground.html">Playground</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Resources</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com/mtg9ing/envcrypt" target="_blank">GitHub</a></li>
+          <li><a href="https://www.npmjs.com/package/envcrypt" target="_blank">npm</a></li>
+          <li><a href="https://github.com/mtg9ing/envcrypt/blob/main/CHANGELOG.md" target="_blank">Changelog</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-heading">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com/MTG9ing/envcrypt/blob/main/LICENSE">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 envcrypt. Open source under MIT License.</p>
+      <div class="footer-social">
+        <a href="https://github.com/mtg9ing/envcrypt" target="_blank" rel="noopener" aria-label="GitHub">
+          <i data-lucide="github" style="width:18px;height:18px;"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/mtg9ing/" aria-label="LinkedIn">
+          <i data-lucide="linkedin" style="width:18px;height:18px;"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/landing.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

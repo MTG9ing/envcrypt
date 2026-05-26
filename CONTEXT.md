@@ -196,9 +196,9 @@ ENCRYPTED FILE FORMAT (.env.enc):
 3. git add .
 4. git commit -m "feat: initial release v1.0.0"
 5. git branch -M main
-6. git remote add origin https://github.com/YOUR_USERNAME/envcrypt.git
+6. git remote add origin https://github.com/mtg9ing/envcrypt.git
 7. git push -u origin main
-8. Create release: github.com/YOUR_USERNAME/envcrypt/releases/new
+8. Create release: github.com/mtg9ing/envcrypt/releases/new
 9. Tag: v1.0.0
 
 # -----------------------------------------------------------------------------

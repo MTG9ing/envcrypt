@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — envcrypt</title>
+  <meta name="description" content="Complete documentation for envcrypt. Learn how to encrypt your environment variables, generate secrets, and secure your applications.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <style>
+    /* Docs-specific styles */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+      padding-top: 72px;
+    }
+    
+    .docs-sidebar {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 72px);
+      overflow-y: auto;
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--border);
+      background: var(--white);
+    }
+    
+    .docs-sidebar::-webkit-scrollbar { width: 4px; }
+    .docs-sidebar::-webkit-scrollbar-thumb { background: transparent; }
+    .docs-sidebar:hover::-webkit-scrollbar-thumb { background: var(--slate); }
+    
+    .docs-search {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .docs-search input {
+      width: 100%;
+      padding: 0.625rem 0.75rem 0.625rem 2.25rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--black);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    
+    .docs-search input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px var(--cyan-glow);
+    }
+    
+    .docs-search input::placeholder { color: var(--muted); }
+    
+    .docs-search i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      width: 16px;
+      height: 16px;
+    }
+    
+    .docs-nav-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .docs-nav-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+    
+    .docs-nav-list {
+      list-style: none;
+    }
+    
+    .docs-nav-list li { margin-bottom: 0.25rem; }
+    
+    .docs-nav-list a {
+      display: block;
+      padding: 0.5rem;
+      border-radius: 8px;
+      color: var(--slate);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+    
+    .docs-nav-list a:hover,
+    .docs-nav-list a.active {
+      background: var(--cyan-glow);
+      color: var(--cyan);
+    }
+    
+    .docs-nav-list a.active {
+      font-weight: 600;
+    }
+    
+    .docs-content {
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 800px;
+    }
+    
+    .docs-content h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    
+    .docs-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .docs-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .docs-content p {
+      color: var(--slate);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    
+    .docs-content a { color: var(--cyan); text-decoration: none; }
+    .docs-content a:hover { text-decoration: underline; }
+    
+    .docs-content ul, .docs-content ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--slate);
+    }
+    
+    .docs-content li { margin-bottom: 0.5rem; line-height: 1.7; }
+    
+    .docs-content code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      padding: 0.125rem 0.375rem;
+      border-radius: 6px;
+      background: var(--off-white);
+      color: var(--black);
+    }
+    
+    .docs-content pre {
+      background: var(--charcoal);
+      border-radius: 16px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    
+    .docs-content pre code {
+      background: none;
+      color: #E4E4E7;
+      padding: 0;
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+    
+    .docs-content blockquote {
+      border-left: 3px solid var(--cyan);
+      padding-left: 1.25rem;
+      margin: 1.5rem 0;
+      color: var(--slate);
+      font-style: italic;
+    }
+    
+    /* Callout boxes */
+    .callout {
+      padding: 1.25rem 1.5rem;
+      border-radius: 14px;
+      margin: 1.5rem 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    
+    .callout.tip {
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+    }
+    
+    .callout.warning {
+      background: rgba(239, 68, 68, 0.04);
+      border: 1px solid rgba(239, 68, 68, 0.1);
+    }
+    
+    .callout.info {
+      background: rgba(59, 130, 246, 0.04);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .callout-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .callout-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .callout.tip .callout-title { color: var(--cyan); }
+    .callout.warning .callout-title { color: var(--error); }
+    .callout.info .callout-title { color: #3B82F6; }
+    
+    .callout p {
+      margin: 0;
+      font-size: 0.9375rem;
+    }
+    
+    /* Table */
+    .docs-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9375rem;
+    }
+    
+    .docs-content th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--border);
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--black);
+    }
+    
+    .docs-content td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--slate);
+    }
+    
+    /* Mobile sidebar toggle */
+    .docs-mobile-toggle {
+      display: none;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 1024px) {
+      .docs-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .docs-sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--transition-base);
+        z-index: 99;
+      }
+      
+      .docs-sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .docs-content {
+        margin-left: 0;
+        padding: 2rem 1.5rem;
+      }
+      
+      .docs-mobile-toggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- <a href="#docs-content" class="skip-link">Skip to content</a> -->
+  <canvas id="particles-canvas"></canvas>
+  
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+          <rect width="100" height="100" rx="20" fill="#000"/>
+          <path d="M50 20c-8 0-14.5 6.5-14.5 14.5v10h-8v35.5c0 4.5 3.5 8 8 8h29c4.5 0 8-3.5 8-8v-35.5h-8v-10c0-8-6.5-14.5-14.5-14.5zm0 8c3.5 0 6.5 3 6.5 6.5v10h-13v-10c0-3.5 3-6.5 6.5-6.5z" fill="url(#logoGrad)"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00E5FF"/>
+              <stop offset="100%" style="stop-color:#00B8D4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        envcrypt
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="docs.html" class="nav-link active">Documentation</a></li>
+        <li><a href="playground.html" class="nav-link">Playground</a></li>
+        <li><a href="index.html#features" class="nav-link">Features</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+        <a href="https://github.com/mtg9ing/envcrypt" class="github-btn" target="_blank">
+          <i data-lucide="github" style="width:16px;height:16px;"></i>
+          <span>Star</span>
+        </a>
+      </div>
+      
+      <button class="mobile-menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar" id="docsSidebar">
+      <div class="docs-search">
+        <i data-lucide="search"></i>
+        <input type="text" placeholder="Search docs..." id="docsSearch">
+      </div>
+      
+      <div class="docs-nav-section">
+        <div class="docs-nav-title">Getting Started</div>
+        <ul class="docs-nav-list">
+          <li><a href="#installation" class="active">Installation</a></li>
+          <li><a href="#quick-start">Quick Start</a></li>
+          <li><a href="#first-encrypt">Your First Encrypt</a></li>
+        </ul>
+      </div>
+      
+      <div class="docs-nav-section">
+        <div class="docs-nav-title">Core Commands</div>
+        <ul class="docs-nav-list">
+          <li><a href="#cmd-init">envcrypt init</a></li>
+          <li><a href="#cmd-run">envcrypt run</a></li>
+          <li><a href="#cmd-doctor">envcrypt doctor</a></li>
+        </ul>
+      </div>
+      
+      <div class="docs-nav-section">
+        <div class="docs-nav-title">Security</div>
+        <ul class="docs-nav-list">
+          <li><a href="#encryption">Encryption Protocol</a></li>
+          <li><a href="#memory">Memory Safety</a></li>
+          <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+      </div>
+      
+      <div class="docs-nav-section">
+        <div class="docs-nav-title">API Reference</div>
+        <ul class="docs-nav-list">
+          <li><a href="#api-decrypt">decryptToEnv()</a></li>
+          <li><a href="#api-programmatic">Programmatic Usage</a></li>
+        </ul>
+      </div>
+    </aside>
+    
+    <!-- Content -->
+    <main class="docs-content" id="docs-content">
+      <h1>Documentation</h1>
+      <p>Complete guide to installing, configuring, and using envcrypt to secure your environment variables.</p>
+      
+      <h2 id="installation">Installation</h2>
+      <p>envcrypt requires Node.js 18 or higher. You can install it globally or as a project dependency.</p>
+      
+      <h3>Global Installation (Recommended)</h3>
+      <pre><code><span class="comment"># Install globally to use the CLI anywhere</span>
+npm install -g envcrypt
+
+<span class="comment"># Verify installation</span>
+envcrypt --version</code></pre>
+      
+      <h3>Project Installation</h3>
+      <pre><code><span class="comment"># Install as a project dependency</span>
+npm install envcrypt
+
+<span class="comment"># Or with yarn</span>
+yarn add envcrypt
+
+<span class="comment"># Or with pnpm</span>
+pnpm add envcrypt</code></pre>
+      
+      <div class="callout tip">
+        <div class="callout-icon"><i data-lucide="lightbulb" style="width:18px;height:18px;color:var(--cyan)"></i></div>
+        <div>
+          <div class="callout-title">Pro Tip</div>
+          <p>Global installation is recommended for the CLI commands. The runtime library works with both global and local installations.</p>
+        </div>
+      </div>
+      
+      <h2 id="quick-start">Quick Start</h2>
+      <p>Get up and running with envcrypt in under 60 seconds.</p>
+      
+      <ol>
+        <li><strong>Initialize your environment:</strong>
+          <pre><code>envcrypt init</code></pre>
+          <p>Follow the interactive prompts to set up your project name, framework, and variables.</p>
+        </li>
+        <li><strong>Install the runtime in your project:</strong>
+          <pre><code>npm install envcrypt</code></pre>
+        </li>
+        <li><strong>Add the decrypt line to your entry file:</strong>
+          <pre><code><span class="keyword">import</span> { decryptToEnv } <span class="keyword">from</span> <span class="string">"envcrypt"</span>;
+<span class="keyword">await</span> <span class="function">decryptToEnv</span>();
+
+<span class="comment">// Your app code here — process.env is populated</span></code></pre>
+        </li>
+        <li><strong>Run your app securely:</strong>
+          <pre><code>envcrypt run npm start</code></pre>
+        </li>
+      </ol>
+      
+      <h2 id="first-encrypt">Your First Encrypt</h2>
+      <p>Let's walk through a complete example with an Express.js application.</p>
+      
+      <h3>Step 1: Initialize</h3>
+      <pre><code>$ envcrypt init
+
+🔐 envcrypt initialization
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+? Project name: my-api
+? Framework: Express.js
+? Generate JWT secret? Yes
+? Generate session secret? Yes
+? Database port (detected free: 5433): 5433
+? API port (detected free: 3001): 3001
+
+✓ Generated cryptographically secure secrets
+✓ Detected safe ports: 5433, 3001
+✓ Encrypted 8 variables into .env.enc</code></pre>
+      
+      <h3>Step 2: Integrate</h3>
+      <p>Create or update your <code>server.js</code>:</p>
+      <pre><code><span class="keyword">import</span> { decryptToEnv } <span class="keyword">from</span> <span class="string">"envcrypt"</span>;
+<span class="keyword">await</span> <span class="function">decryptToEnv</span>();
+
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
+<span class="keyword">const</span> <span class="variable">app</span> = <span class="function">express</span>();
+
+<span class="keyword">const</span> <span class="variable">port</span> = process.env.API_PORT || <span class="string">3000</span>;
+
+app.<span class="function">get</span>(<span class="string">"/"</span>, (req, res) => {
+  res.<span class="function">json</span>({ message: <span class="string">"API secured with envcrypt"</span> });
+});
+
+app.<span class="function">listen</span>(port, () => {
+  console.<span class="function">log</span>(<span class="string">`Server running on port ${port}`</span>);
+});</code></pre>
+      
+      <h3>Step 3: Run</h3>
+      <pre><code>$ envcrypt run node server.js
+Enter env-lock password: ********
+✓ Environment decrypted
+▶ Running: node server.js
+
+Server running on port 3001
+✓ Process exited with code 0</code></pre>
+      
+      <h2 id="cmd-init">envcrypt init</h2>
+      <p>The <code>init</code> command interactively guides you through setting up a new encrypted environment.</p>
+      
+      <h3>Options</h3>
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>-p, --preset &lt;name&gt;</code></td><td>Use a template preset (node-jwt-postgres, node-mongodb, python-django, go-standard, vanilla-js)</td></tr>
+          <tr><td><code>-f, --force</code></td><td>Overwrite existing .env.enc without prompting</td></tr>
+        </tbody>
+      </table>
+      
+      <h3>Presets</h3>
+      <p>Presets pre-configure common environment variables for popular frameworks:</p>
+      
+      <pre><code><span class="comment"># Node.js + JWT + PostgreSQL</span>
+envcrypt init --preset node-jwt-postgres
+
+<span class="comment"># Node.js + MongoDB</span>
+envcrypt init --preset node-mongodb
+
+<span class="comment"># Python Django</span>
+envcrypt init --preset python-django
+
+<span class="comment"># Go backend</span>
+envcrypt init --preset go-standard
+
+<span class="comment"># Vanilla JavaScript</span>
+envcrypt init --preset vanilla-js</code></pre>
+      
+      <h3>What Gets Created</h3>
+      <pre><code>your-project/
+├── .env.enc              <span class="comment"># Encrypted environment (safe to commit)</span>
+├── .envcrypt/
+│   ├── config.json       <span class="comment"># Project schema and metadata</span>
+│   └── audit.log         <span class="comment"># Decrypt event log</span>
+└── .gitignore            <span class="comment"># .env files ignored automatically</span></code></pre>
+      
+      <h2 id="cmd-run">envcrypt run</h2>
+      <p>Decrypts your environment variables into memory and executes the specified command.</p>
+      
+      <pre><code><span class="comment"># Run a Node.js script</span>
+envcrypt run node server.js
+
+<span class="comment"># Run npm scripts</span>
+envcrypt run npm start
+envcrypt run npm run dev
+
+<span class="comment"># Run with arguments</span>
+envcrypt run node --inspect server.js</code></pre>
+      
+      <div class="callout info">
+        <div class="callout-icon"><i data-lucide="info" style="width:18px;height:18px;color:#3B82F6"></i></div>
+        <div>
+          <div class="callout-title">How It Works</div>
+          <p>envcrypt run decrypts .env.enc into a temporary memory space, spawns your command as a child process with the decrypted environment, and securely wipes all secrets from memory when the process exits.</p>
+        </div>
+      </div>
+      
+      <h2 id="cmd-doctor">envcrypt doctor</h2>
+      <p>Health check your environment setup. Verifies:</p>
+      <ul>
+        <li>.env.enc file exists and is valid</li>
+        <li>Configuration is correct</li>
+        <li>.gitignore properly excludes .env files</li>
+        <li>No plaintext .env files exist</li>
+        <li>Node.js version is compatible</li>
+      </ul>
+      
+      <pre><code>$ envcrypt doctor
+
+🩺 envcrypt Doctor
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ .env.enc file          Found (2.34 KB)
+✓ Configuration          Project: my-api, Version: 1.0.0
+✓ .gitignore             .env ignored, .env.enc not ignored (correct)
+✓ Node.js version        v20.11.0 (>= 18.0.0)
+✓ Plaintext .env files   None found
+
+✅ All checks passed! Your environment is secure.</code></pre>
+      
+      <h2 id="encryption">Encryption Protocol</h2>
+      <p>envcrypt uses industry-standard encryption to protect your secrets.</p>
+      
+      <h3>Algorithm Details</h3>
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Specification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Encryption</td><td>AES-256-GCM</td></tr>
+          <tr><td>Key Derivation</td><td>Argon2id (64MB, 3 iterations, 4 parallelism)</td></tr>
+          <tr><td>Integrity</td><td>HMAC-SHA256</td></tr>
+          <tr><td>IV Size</td><td>96 bits (12 bytes)</td></tr>
+          <tr><td>Auth Tag</td><td>128 bits (16 bytes)</td></tr>
+          <tr><td>Salt</td><td>128 bits (16 bytes)</td></tr>
+        </tbody>
+      </table>
+      
+      <h3>File Format</h3>
+      <pre><code>[4 bytes]   Magic: "ENVL"
+[1 byte]    Version: 0x01
+[32 bytes]  HMAC-SHA256 of header
+[16 bytes]  Argon2id salt
+[12 bytes]  AES-GCM IV
+[N bytes]   Ciphertext (encrypted JSON)
+[16 bytes]  AES-GCM auth tag</code></pre>
+      
+      <div class="callout warning">
+        <div class="callout-icon"><i data-lucide="alert-triangle" style="width:18px;height:18px;color:var(--error)"></i></div>
+        <div>
+          <div class="callout-title">Security Warning</div>
+          <p>Your master password is never stored anywhere. If you forget it, you cannot recover your .env.enc file. This is zero-knowledge security by design.</p>
+        </div>
+      </div>
+      
+      <h2 id="memory">Memory Safety</h2>
+      <p>envcrypt implements multiple layers of memory protection:</p>
+      
+      <ul>
+        <li><strong>Auto-shred:</strong> Buffers are overwritten with zeros, ones, and random data before being freed</li>
+        <li><strong>Environment cleanup:</strong> All decrypted variables are removed from process.env on exit</li>
+        <li><strong>Child process isolation:</strong> Secrets are passed to child processes, then wiped from parent memory</li>
+        <li><strong>mlock (best-effort):</strong> Attempts to pin decrypted buffers to RAM to prevent swapping to disk</li>
+      </ul>
+      
+      <h2 id="best-practices">Best Practices</h2>
+      
+      <h3>DO</h3>
+      <ul>
+        <li>✅ Commit .env.enc to version control</li>
+        <li>✅ Use strong, unique master passwords (12+ characters)</li>
+        <li>✅ Run envcrypt doctor regularly</li>
+        <li>✅ Use envcrypt run for production deployments</li>
+        <li>✅ Rotate secrets periodically with envcrypt rotate</li>
+      </ul>
+      
+      <h3>DON'T</h3>
+      <ul>
+        <li>❌ Never commit plaintext .env files</li>
+        <li>❌ Don't share your master password in Slack, email, or chat</li>
+        <li>❌ Don't use the same password across multiple projects</li>
+        <li>❌ Don't store .env.enc backups without encryption</li>
+      </ul>
+      
+      <h2 id="api-decrypt">decryptToEnv()</h2>
+      <p>The main API for programmatic decryption in your application.</p>
+      
+      <h3>Signature</h3>
+      <pre><code><span class="keyword">async function</span> <span class="function">decryptToEnv</span>(options?: {
+  path?: <span class="variable">string</span>;    <span class="comment">// Path to .env.enc (default: './.env.enc')</span>
+  password?: <span class="variable">string</span>; <span class="comment">// Master password (optional, will prompt if not provided)</span>
+}): <span class="variable">Promise</span>&lt;<span class="variable">Record</span>&lt;<span class="variable">string</span>, <span class="variable">string</span>&gt;&gt;</code></pre>
+      
+      <h3>Example</h3>
+      <pre><code><span class="keyword">import</span> { decryptToEnv } <span class="keyword">from</span> <span class="string">"envcrypt"</span>;
+
+<span class="comment">// Simple usage — prompts for password</span>
+<span class="keyword">await</span> <span class="function">decryptToEnv</span>();
+
+<span class="comment">// With options</span>
+<span class="keyword">await</span> <span class="function">decryptToEnv</span>({
+  path: <span class="string">"./config/.env.enc"</span>,
+  password: process.env.ENVCRYPT_PASSWORD
+});
+
+<span class="comment">// Returns decrypted variables</span>
+<span class="keyword">const</span> <span class="variable">env</span> = <span class="keyword">await</span> <span class="function">decryptToEnv</span>();
+console.<span class="function">log</span>(env.JWT_SECRET);</code></pre>
+      
+      <h2 id="api-programmatic">Programmatic Usage</h2>
+      <p>You can also use envcrypt's internal modules directly:</p>
+      
+      <pre><code><span class="keyword">import</span> { encrypt, decrypt } <span class="keyword">from</span> <span class="string">"envcrypt/src/crypto/cipher.js"</span>;
+<span class="keyword">import</span> { generateSecret } <span class="keyword">from</span> <span class="string">"envcrypt/src/crypto/secrets.js"</span>;
+
+<span class="comment">// Generate a secure secret</span>
+<span class="keyword">const</span> <span class="variable">secret</span> = <span class="function">generateSecret</span>(<span class="string">64</span>); <span class="comment">// 512-bit JWT secret</span>
+
+<span class="comment">// Encrypt environment variables</span>
+<span class="keyword">const</span> <span class="variable">envVars</span> = { API_KEY: <span class="string">"secret123"</span>, PORT: <span class="string">"3000"</span> };
+<span class="keyword">const</span> <span class="variable">encrypted</span> = <span class="keyword">await</span> <span class="function">encrypt</span>(envVars, <span class="string">"my-password"</span>);
+
+<span class="comment">// Decrypt</span>
+<span class="keyword">const</span> <span class="variable">decrypted</span> = <span class="keyword">await</span> <span class="function">decrypt</span>(encrypted, <span class="string">"my-password"</span>);
+console.<span class="function">log</span>(decrypted.API_KEY); <span class="comment">// "secret123"</span></code></pre>
+      
+      <div class="callout tip">
+        <div class="callout-icon"><i data-lucide="lightbulb" style="width:18px;height:18px;color:var(--cyan)"></i></div>
+        <div>
+          <div class="callout-title">Need More Help?</div>
+          <p>Check out the <a href="playground.html">Playground</a> to test envcrypt features in your browser, or visit our <a href="https://github.com/mtg9ing/envcrypt/issues" target="_blank">GitHub Issues</a> for community support.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <button class="docs-mobile-toggle" id="docsMobileToggle" aria-label="Toggle sidebar">
+    <i data-lucide="menu" style="width:20px;height:20px;"></i>
+  </button>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Docs search
+    (function() {
+      const searchInput = document.getElementById('docsSearch');
+      const navLinks = document.querySelectorAll('.docs-nav-list a');
+      const sections = document.querySelectorAll('.docs-content h2[id], .docs-content h3[id]');
+      
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
+          
+          if (!query) {
+            // Reset
+            navLinks.forEach(link => {
+              link.style.display = 'block';
+              link.style.background = '';
+            });
+            document.querySelectorAll('.docs-nav-section').forEach(s => s.style.display = 'block');
+            return;
+          }
+          
+          // Search nav links
+          navLinks.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            const matches = text.includes(query);
+            link.style.display = matches ? 'block' : 'none';
+            if (matches) {
+              link.style.background = 'var(--cyan-glow)';
+            } else {
+              link.style.background = '';
+            }
+          });
+          
+          // Also highlight matching sections in content
+          sections.forEach(section => {
+            const text = section.textContent.toLowerCase();
+            if (text.includes(query)) {
+              section.style.background = 'var(--cyan-glow)';
+              section.style.padding = '0.25rem 0.5rem';
+              section.style.borderRadius = '6px';
+              section.style.display = 'inline-block';
+            } else {
+              section.style.background = '';
+              section.style.padding = '';
+              section.style.borderRadius = '';
+              section.style.display = '';
+            }
+          });
+        });
+        
+        // Clear on escape
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input'));
+            searchInput.blur();
+          }
+        });
+      }
+    })();
+    
+    // Mobile sidebar toggle
+    (function() {
+      const toggle = document.getElementById('docsMobileToggle');
+      const sidebar = document.getElementById('docsSidebar');
+      let isOpen = false;
+      
+      if (toggle && sidebar) {
+        toggle.addEventListener('click', () => {
+          isOpen = !isOpen;
+          sidebar.classList.toggle('open', isOpen);
+          toggle.innerHTML = isOpen 
+            ? '<i data-lucide="x" style="width:20px;height:20px;"></i>' 
+            : '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+          if (window.lucide) lucide.createIcons();
+        });
+        
+        // Close on link click
+        sidebar.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            isOpen = false;
+            sidebar.classList.remove('open');
+            toggle.innerHTML = '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+            document.body.style.overflow = '';
+            if (window.lucide) lucide.createIcons();
+          });
+        });
+        
+        // Close on escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && isOpen) {
+            isOpen = false;
+            sidebar.classList.remove('open');
+            toggle.innerHTML = '<i data-lucide="menu" style="width:20px;height:20px;"></i>';
+            document.body.style.overflow = '';
+            if (window.lucide) lucide.createIcons();
+          }
+        });
+      }
+    })();
+    
+    // Active section highlighting
+    (function() {
+      const sections = document.querySelectorAll('.docs-content [id]');
+      const navLinks = document.querySelectorAll('.docs-nav-list a');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -80% 0px' });
+      
+      sections.forEach(section => observer.observe(section));
+    })();
+    
+    lucide.createIcons();
+  </script>
+</body>
+</html>

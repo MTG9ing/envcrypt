@@ -1,5 +1,5 @@
 {
-  "name": "envcrypt",
+  "name": "@mtg9ing/envcrypt",
   "version": "1.0.0",
   "description": "The Ultimate Developer Secrets Swiss Army Knife - encrypt your environment, never leak a secret",
   "main": "src/index.js",

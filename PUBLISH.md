@@ -44,8 +44,8 @@ git commit -m "feat: initial release v1.0.0
 # Rename branch to main
 git branch -M main
 
-# Add remote (replace YOUR_USERNAME with your GitHub username)
-git remote add origin https://github.com/YOUR_USERNAME/envcrypt.git
+# Add remote (replace mtg9ing with your GitHub username)
+git remote add origin https://github.com/mtg9ing/envcrypt.git
 
 # Push
 git push -u origin main
@@ -104,7 +104,7 @@ npm view envcrypt
 # 3. Scroll to "Trusted Publishers"
 # 4. Click "GitHub Actions"
 # 5. Fill in:
-#    - GitHub Organization: YOUR_USERNAME
+#    - GitHub Organization: mtg9ing
 #    - Repository: envcrypt
 #    - Workflow: publish.yml
 # 6. Click "Link"
@@ -128,7 +128,7 @@ git push origin main --tags
 # 3. Publish to npm with provenance
 
 # Or create a release manually:
-# 1. Go to https://github.com/YOUR_USERNAME/envcrypt/releases/new
+# 1. Go to https://github.com/mtg9ing/envcrypt/releases/new
 # 2. Choose tag: v1.0.0
 # 3. Title: envcrypt v1.0.0
 # 4. Description: Copy from CHANGELOG
@@ -147,7 +147,7 @@ envcrypt --version
 envcrypt doctor
 
 # Check GitHub Actions
-# Go to https://github.com/YOUR_USERNAME/envcrypt/actions
+# Go to https://github.com/mtg9ing/envcrypt/actions
 # Verify CI passes and publish workflow succeeded
 
 # -----------------------------------------------------------------------------
