@@ -1,0 +1,64 @@
+{
+  "name": "env-lock",
+  "version": "1.0.0",
+  "description": "The Ultimate Developer Secrets Swiss Army Knife - encrypt your environment, never leak a secret",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "env-lock": "./bin/env-lock.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint src/ bin/",
+    "format": "prettier --write src/ bin/"
+  },
+  "keywords": [
+    "env",
+    "secrets",
+    "encryption",
+    "aes-256-gcm",
+    "security",
+    "cli",
+    "environment-variables",
+    "cryptography",
+    "port-detection",
+    "team-sharing",
+    "dotenv",
+    "env-encryption"
+  ],
+  "author": "Mohammed Ghazy <mtg9ing@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtg9ing/env-lock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mtg9ing/env-lock/issues"
+  },
+  "homepage": "https://mtg9ing.github.io/env-lock",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "inquirer": "^9.2.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.0",
+    "argon2": "^0.40.0",
+    "boxen": "^7.1.0"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0"
+  }
+}

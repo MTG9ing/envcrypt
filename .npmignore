@@ -1,0 +1,19 @@
+# Source files (not needed in published package)
+src/
+tests/
+docs/
+.github/
+
+# Config files
+.eslintrc
+.prettierrc
+vitest.config.js
+
+# Development
+node_modules/
+coverage/
+*.log
+.DS_Store
+
+# Context (internal planning doc)
+CONTEXT.md

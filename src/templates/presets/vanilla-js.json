@@ -1,0 +1,8 @@
+{
+  "name": "Vanilla JavaScript",
+  "description": "Simple JavaScript project",
+  "variables": [
+    { "name": "API_KEY", "type": "api_key", "description": "API key" },
+    { "name": "API_PORT", "type": "port", "portType": "api", "description": "Server port" }
+  ]
+}

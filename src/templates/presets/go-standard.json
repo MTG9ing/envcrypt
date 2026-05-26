@@ -1,0 +1,11 @@
+{
+  "name": "Go Standard",
+  "description": "Go backend API",
+  "variables": [
+    { "name": "JWT_SECRET", "type": "jwt", "description": "JWT signing secret" },
+    { "name": "DB_DSN", "type": "input", "default": "host=localhost port=5432 dbname=myapp", "description": "Database DSN" },
+    { "name": "API_PORT", "type": "port", "portType": "api", "description": "API server port" },
+    { "name": "LOG_LEVEL", "type": "list", "choices": ["debug", "info", "warn", "error"], "default": "info", "description": "Log level" },
+    { "name": "GO_ENV", "type": "static", "value": "development", "description": "Go environment" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Node.js + JWT + PostgreSQL",
+  "description": "Full-stack Node.js API with JWT authentication and PostgreSQL database",
+  "variables": [
+    { "name": "JWT_SECRET", "type": "jwt", "description": "JWT signing secret" },
+    { "name": "SESSION_SECRET", "type": "session", "description": "Session encryption secret" },
+    { "name": "DB_HOST", "type": "static", "value": "localhost", "description": "Database host" },
+    { "name": "DB_PORT", "type": "port", "portType": "database", "description": "Database port" },
+    { "name": "DB_NAME", "type": "input", "default": "myapp", "description": "Database name" },
+    { "name": "DB_USER", "type": "input", "default": "postgres", "description": "Database user" },
+    { "name": "DB_PASSWORD", "type": "password", "description": "Database password" },
+    { "name": "API_PORT", "type": "port", "portType": "api", "description": "API server port" },
+    { "name": "NODE_ENV", "type": "static", "value": "development", "description": "Node environment" }
+  ]
+}

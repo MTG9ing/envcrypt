@@ -1,0 +1,11 @@
+{
+  "name": "Python Django",
+  "description": "Django web application",
+  "variables": [
+    { "name": "SECRET_KEY", "type": "jwt", "description": "Django secret key" },
+    { "name": "DATABASE_URL", "type": "input", "default": "postgres://localhost:5432/myapp", "description": "Database URL" },
+    { "name": "DEBUG", "type": "confirm", "default": false, "description": "Debug mode" },
+    { "name": "ALLOWED_HOSTS", "type": "input", "default": "localhost,127.0.0.1", "description": "Allowed hosts" },
+    { "name": "DJANGO_SETTINGS_MODULE", "type": "static", "value": "myapp.settings", "description": "Settings module" }
+  ]
+}

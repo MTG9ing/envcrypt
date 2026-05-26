@@ -1,0 +1,11 @@
+{
+  "name": "Node.js + MongoDB",
+  "description": "Node.js API with MongoDB and Redis",
+  "variables": [
+    { "name": "JWT_SECRET", "type": "jwt", "description": "JWT signing secret" },
+    { "name": "MONGODB_URI", "type": "input", "default": "mongodb://localhost:27017/myapp", "description": "MongoDB connection URI" },
+    { "name": "API_PORT", "type": "port", "portType": "api", "description": "API server port" },
+    { "name": "REDIS_URL", "type": "input", "default": "redis://localhost:6379", "description": "Redis connection URL" },
+    { "name": "NODE_ENV", "type": "static", "value": "development", "description": "Node environment" }
+  ]
+}
